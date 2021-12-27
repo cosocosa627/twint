@@ -110,7 +110,6 @@ def initialize(args):
     c.Format = args.format
     c.User_full = args.user_full
     # c.Profile_full = args.profile_full
-    c.Pandas_type = args.pandas_type
     c.Index_tweets = args.index_tweets
     c.Index_follow = args.index_follow
     c.Index_users = args.index_users
@@ -120,7 +119,6 @@ def initialize(args):
     c.Videos = args.videos
     c.Media = args.media
     c.Replies = args.replies
-    c.Pandas_clean = args.pandas_clean
     c.Proxy_host = args.proxy_host
     c.Proxy_port = args.proxy_port
     c.Proxy_type = args.proxy_type
@@ -219,9 +217,6 @@ def options():
                     action="store_true")
     ap.add_argument("--translate-dest", help="Translate tweet to language (ISO2).",
                     default="en")
-    ap.add_argument("--store-pandas", help="Save Tweets in a DataFrame (Pandas) file.")
-    ap.add_argument("--pandas-type",
-                    help="Specify HDF5 or Pickle (HDF5 as default)", nargs="?", default="HDF5")
     ap.add_argument("-it", "--index-tweets",
                     help="Custom Elasticsearch Index name for Tweets.", nargs="?", default="twinttweets")
     ap.add_argument("-if", "--index-follow",
@@ -237,8 +232,6 @@ def options():
     ap.add_argument("--media",
                     help="Display Tweets with only images or videos.", action="store_true")
     ap.add_argument("--replies", help="Display replies to a subject.", action="store_true")
-    ap.add_argument("-pc", "--pandas-clean",
-                    help="Automatically clean Pandas dataframe at every scrape.")
     ap.add_argument("-cq", "--custom-query", help="Custom search query.")
     ap.add_argument("-pt", "--popular-tweets", help="Scrape popular tweets instead of recent ones.",
                     action="store_true")
@@ -268,16 +261,10 @@ def main():
     args = options()
     check(args)
 
-    if args.pandas_clean:
-        storage.panda.clean()
-
     c = initialize(args)
 
     if args.userlist:
         c.Query = loadUserList(args.userlist, "search")
-
-    if args.pandas_clean:
-        storage.panda.clean()
 
     if args.favorites:
         if args.userlist:

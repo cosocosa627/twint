@@ -3,7 +3,7 @@ from datetime import datetime
 from . import format, get
 from .tweet import Tweet
 from .user import User
-from .storage import db, elasticsearch, write, panda
+from .storage import db, elasticsearch, write
 
 import logging as logme
 
@@ -13,9 +13,6 @@ users_list = []
 
 author_list = {''}
 author_list.pop()
-
-# used by Pandas
-_follows_object = {}
 
 
 def _formatDateTime(datetimestamp):
@@ -138,9 +135,6 @@ async def checkData(tweet, config, conn):
         if config.Database:
             logme.debug(__name__ + ':checkData:Database')
             db.tweets(conn, tweet, config)
-        if config.Pandas:
-            logme.debug(__name__ + ':checkData:Pandas')
-            panda.update(tweet, config)
         if config.Store_object:
             logme.debug(__name__ + ':checkData:Store_object')
             if hasattr(config.Store_object_tweets_list, 'append'):
@@ -201,10 +195,6 @@ async def Users(u, config, conn):
         else:
             users_list.append(user)  # twint.user.user
 
-    if config.Pandas:
-        logme.debug(__name__ + ':User:Pandas+user')
-        panda.update(user, config)
-
     _output(user, output, config)
 
 
@@ -228,14 +218,4 @@ async def Username(username, config, conn):
         else:
             follows_list.append(username)  # twint.user.user
 
-    if config.Pandas:
-        logme.debug(__name__ + ':Username:object+pandas')
-        try:
-            _ = _follows_object[config.Username][follow_var]
-        except KeyError:
-            _follows_object.update({config.Username: {follow_var: []}})
-        _follows_object[config.Username][follow_var].append(username)
-        if config.Pandas_au:
-            logme.debug(__name__ + ':Username:object+pandas+au')
-            panda.update(_follows_object[config.Username], config)
     _output(username, username, config)

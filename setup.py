@@ -4,7 +4,7 @@ import io
 import os
 
 # Package meta-data
-NAME = 'twint'
+NAME = 'twint_e'
 DESCRIPTION = 'An advanced Twitter scraping & OSINT tool.'
 URL = 'https://github.com/twintproject/twint'
 EMAIL = 'codyzacharias@pm.me'
@@ -15,7 +15,7 @@ VERSION = None
 # Packages required
 REQUIRED = [
     'aiohttp', 'aiodns', 'beautifulsoup4', 'cchardet', 'dataclasses',
-    'elasticsearch', 'pysocks', 'pandas', 'aiohttp_socks',
+    'elasticsearch', 'pysocks', 'aiohttp_socks',
     'schedule', 'geopy', 'fake-useragent', 'googletransx'
 ]
 
@@ -42,7 +42,7 @@ setup(
     author_email=EMAIL,
     python_requires=REQUIRES_PYTHON,
     url=URL,
-    packages=['twint', 'twint.storage'],
+    packages=['twint_e', 'twint_e.storage'],
     entry_points={
         'console_scripts': [
             'twint = twint.cli:run_as_command',
