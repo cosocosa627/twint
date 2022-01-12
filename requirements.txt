@@ -2,7 +2,6 @@ aiohttp
 aiodns
 beautifulsoup4
 cchardet
-dataclasses
 elasticsearch
 pysocks
 aiohttp_socks<=0.4.1
